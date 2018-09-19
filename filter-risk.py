@@ -15,3 +15,9 @@ for path in plugin_paths:
         risk_factor = root.find('attributes/attribute[name="risk_factor"]/value').text
     except:
         risk_factor = None
+
+    if risk_factor!='Critical' and risk_factor!='High':
+        continue
+
+    script_id = root.find('script_id').text
+    print(';'.join([script_id, risk_factor]))
