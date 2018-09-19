@@ -10,4 +10,7 @@ for path in plugin_paths:
     xml = subprocess.check_output(["/opt/nessus/bin/nasl", "-VVVVV", path])
 
     root = ET.fromstring(xml)
-    risk_factor = root.find('attributes/attribute[name="risk_factor"]/value').text
+    try:
+        risk_factor = root.find('attributes/attribute[name="risk_factor"]/value').text
+    except:
+        risk_factor = None
