@@ -2,6 +2,7 @@
 
 import xml.etree.ElementTree as ET
 import csv
+import sys
 import argparse
 import os.path
 
@@ -10,3 +11,9 @@ parser.add_argument("plugin_ids_file", metavar="<file.csv>", type=str, help="fil
 parser.add_argument("input_nessus_file", metavar="<file.nessus>", type=str, help="input .nessus file")
 
 args = parser.parse_args()
+
+for file in [args.input_nessus_file, args.plugin_ids_file]:
+    if not os.path.isfile(file):
+        print("'{}' does not exist".format(file))
+        sys.exit(1)
+
