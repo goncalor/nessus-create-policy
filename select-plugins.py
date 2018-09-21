@@ -19,10 +19,6 @@ for file in [args.input_nessus_file, args.plugin_ids_file]:
         sys.exit(1)
 
 with open(args.plugin_ids_file, newline='') as csvfile:
-    csvreader = csv.reader(csvfile, delimiter=';', quotechar='|')
-
-    # FIXME: check if a header is present
-
     plugin_ids = [row[0] for row in csv.reader(csvfile, delimiter=';', quotechar='|') if row[0].isdigit()]
     nr_plugins = len(plugin_ids)
     # remove duplicate plugins
