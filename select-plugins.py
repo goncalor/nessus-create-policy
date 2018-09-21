@@ -17,3 +17,10 @@ for file in [args.input_nessus_file, args.plugin_ids_file]:
         print("'{}' does not exist".format(file))
         sys.exit(1)
 
+with open(args.plugin_ids_file, newline='') as csvfile:
+    csvreader = csv.reader(csvfile, delimiter=';', quotechar='|')
+
+    # FIXME: check if a header is present
+
+    for row in csv.reader(csvfile, delimiter=';', quotechar='|'):
+        print(row)
