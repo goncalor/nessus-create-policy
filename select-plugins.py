@@ -30,3 +30,15 @@ try:
 except:
     print("ERROR: Bad .nessus input file")
     sys.exit(1)
+
+# create an empty IndividualPluginSelection
+policy = root.find('Policy')
+individual_plugins = policy.find('IndividualPluginSelection')
+if individual_plugins:
+    policy.remove(individual_plugins)
+individual_plugins = ET.Element('IndividualPluginSelection')
+policy.append(individual_plugins)
+
+for id in plugin_ids:
+    item = ET.fromstring('<PluginItem><PluginId>{}</PluginId><Status>enabled</Status></PluginItem>'.format(id))
+    individual_plugins.append(item)
