@@ -46,10 +46,12 @@ if individual_plugins:
 individual_plugins = ET.Element('IndividualPluginSelection')
 policy.append(individual_plugins)
 
+# enable only the needed plugins
 for id in plugin_ids:
     item = ET.fromstring('<PluginItem><PluginId>{}</PluginId><Status>enabled</Status></PluginItem>'.format(id))
     individual_plugins.append(item)
 
+# mark all plugin families' statuses as mixed
 family_selection = policy.find('FamilySelection')
 for fam_item in family_selection:
     fam_status = fam_item.find('Status')
