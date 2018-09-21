@@ -24,12 +24,18 @@ with open(args.plugin_ids_file, newline='') as csvfile:
     # FIXME: check if a header is present
 
     plugin_ids = [row[0] for row in csv.reader(csvfile, delimiter=';', quotechar='|') if row[0].isdigit()]
+    nr_plugins = len(plugin_ids)
+    # remove duplicate plugins
+    plugin_ids = list(set(plugin_ids))
+    if len(plugin_ids) != nr_plugins:
+        print('WARN: Found duplicate plugin IDs', file=sys.stderr)
+        nr_plugins = len(plugin_ids)
 
 try:
     tree = ET.parse(args.input_nessus_file)
     root = tree.getroot()
 except:
-    print("ERROR: Bad .nessus input file")
+    print('ERROR: Bad .nessus input file', file=sys.stderr)
     sys.exit(1)
 
 # create an empty IndividualPluginSelection
@@ -52,3 +58,4 @@ for fam_item in family_selection:
 
 # TODO: if no output file is provided output to stdout
 tree.write(args.output_nessus_file)
+print('Wrote output file {}'.format(args.output_nessus_file))
