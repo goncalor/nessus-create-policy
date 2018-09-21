@@ -22,5 +22,11 @@ with open(args.plugin_ids_file, newline='') as csvfile:
 
     # FIXME: check if a header is present
 
-    for row in csv.reader(csvfile, delimiter=';', quotechar='|'):
-        print(row)
+    plugin_ids = [row[0] for row in csv.reader(csvfile, delimiter=';', quotechar='|') if row[0].isdigit()]
+
+try:
+    tree = ET.parse(args.input_nessus_file)
+    root = tree.getroot()
+except:
+    print("ERROR: Bad .nessus input file")
+    sys.exit(1)
