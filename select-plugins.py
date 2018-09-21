@@ -9,7 +9,7 @@ import os.path
 parser = argparse.ArgumentParser(description='Edit a .nessus policy file to select individual plugins')
 parser.add_argument("plugin_ids_file", metavar="<file.csv>", type=str, help="file with the IDs for plugins to select")
 parser.add_argument("input_nessus_file", metavar="<file_in.nessus>", type=str, help="input .nessus file")
-parser.add_argument("output_nessus_file", metavar="<file_out.nessus>", type=str, help="input .nessus file")
+parser.add_argument("output_nessus_file", metavar="<file_out.nessus>", type=str, help="output .nessus file")
 
 args = parser.parse_args()
 
@@ -44,5 +44,11 @@ for id in plugin_ids:
     item = ET.fromstring('<PluginItem><PluginId>{}</PluginId><Status>enabled</Status></PluginItem>'.format(id))
     individual_plugins.append(item)
 
-# TODO: if no output file if provided output to stdout
+family_selection = policy.find('FamilySelection')
+for fam_item in family_selection:
+    fam_status = fam_item.find('Status')
+    fam_item.remove(fam_status)
+    fam_item.append(ET.fromstring('<Status>mixed</Status>'))
+
+# TODO: if no output file is provided output to stdout
 tree.write(args.output_nessus_file)
