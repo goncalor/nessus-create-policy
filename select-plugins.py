@@ -22,7 +22,7 @@ with open(args.plugin_ids_file, newline='') as csvfile:
     plugin_ids = [row[0] for row in csv.reader(csvfile, delimiter=';', quotechar='|') if row[0].isdigit()]
     nr_plugins = len(plugin_ids)
     # remove duplicate plugins
-    plugin_ids = list(set(plugin_ids))
+    plugin_ids = set(plugin_ids)
     if len(plugin_ids) != nr_plugins:
         print('WARN: Found duplicate plugin IDs', file=sys.stderr)
         nr_plugins = len(plugin_ids)
