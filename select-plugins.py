@@ -44,4 +44,5 @@ for id in plugin_ids:
     item = ET.fromstring('<PluginItem><PluginId>{}</PluginId><Status>enabled</Status></PluginItem>'.format(id))
     individual_plugins.append(item)
 
+# TODO: if no output file if provided output to stdout
 tree.write(args.output_nessus_file)
