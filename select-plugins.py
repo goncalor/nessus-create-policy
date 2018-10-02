@@ -6,10 +6,14 @@ import sys
 import argparse
 import os.path
 
-parser = argparse.ArgumentParser(description='Edit a .nessus policy file to select individual plugins')
-parser.add_argument("plugin_ids_file", metavar="<file.csv>", type=str, help="file with the IDs for plugins to select")
-parser.add_argument("input_nessus_file", metavar="<file_in.nessus>", type=str, help="input .nessus file")
-parser.add_argument("output_nessus_file", metavar="<file_out.nessus>", type=str, help="output .nessus file")
+parser = argparse.ArgumentParser(
+        description='Edit a .nessus policy file to select individual plugins')
+parser.add_argument("plugin_ids_file", metavar="<file.csv>",
+        type=str, help="file with the IDs for plugins to select")
+parser.add_argument("input_nessus_file", metavar="<file_in.nessus>",
+        type=str, help="input .nessus file")
+parser.add_argument("output_nessus_file", metavar="<file_out.nessus>",
+        type=str, help="output .nessus file")
 
 args = parser.parse_args()
 
@@ -19,7 +23,9 @@ for file in [args.input_nessus_file, args.plugin_ids_file]:
         sys.exit(1)
 
 with open(args.plugin_ids_file, newline='') as csvfile:
-    plugin_ids = [row[0] for row in csv.reader(csvfile, delimiter=';', quotechar='|') if row[0].isdigit()]
+    plugin_ids = [row[0] for row
+            in csv.reader(csvfile, delimiter=';', quotechar='|')
+            if row[0].isdigit()]
     nr_plugins = len(plugin_ids)
     # remove duplicate plugins
     plugin_ids = set(plugin_ids)
@@ -44,7 +50,8 @@ policy.append(individual_plugins)
 
 # enable only the needed plugins
 for id in plugin_ids:
-    item = ET.fromstring('<PluginItem><PluginId>{}</PluginId><Status>enabled</Status></PluginItem>'.format(id))
+    item = ET.fromstring('''<PluginItem><PluginId>{}</PluginId>
+            <Status>enabled</Status></PluginItem>'''.format(id))
     individual_plugins.append(item)
 
 # mark all plugin families' statuses as mixed
