@@ -34,6 +34,8 @@ for path in nbin_paths:
     except:
         info['risk_factor'] = None
 
+    info['dependencies'] = [dep.text for dep in root.findall('dependencies/dependency')]
+
     plugins_info[os.path.basename(path)] = info
 
 print(plugins_info)
