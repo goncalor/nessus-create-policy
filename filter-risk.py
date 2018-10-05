@@ -23,6 +23,11 @@ for path in nbin_paths:
         info['script_id'] = None
 
     try:
+        info['script_name'] = root.find('script_name').text
+    except:
+        info['script_name'] = None
+
+    try:
         info['risk_factor'] = root.find(
                 'attributes/attribute[name="risk_factor"]/value').text
     except:
