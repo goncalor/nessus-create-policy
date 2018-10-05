@@ -3,10 +3,13 @@
 import glob
 import subprocess
 import xml.etree.ElementTree as ET
+import sys
 
-plugin_paths = glob.glob("nessus-samples/*.nasl") + glob.glob("nessus-samples/*.nbin")
+# TODO: check that sys.argv[1] is a directory and ends in /
+nasl_paths = glob.glob(sys.argv[1] + "*.nasl")
+nbin_paths = glob.glob(sys.argv[1] + "*.nbin")
 
-for path in plugin_paths:
+for path in nbin_paths:
     # it should be more efficient to call 'nasl' with multiple files
     xml = subprocess.check_output(["/opt/nessus/bin/nasl", "-VVVVV", path])
 
