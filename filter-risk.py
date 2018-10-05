@@ -4,6 +4,7 @@ import glob
 import subprocess
 import xml.etree.ElementTree as ET
 import sys
+import os.path
 
 # TODO: check that sys.argv[1] is a directory and ends in /
 nasl_paths = glob.glob(sys.argv[1] + "*.nasl")
@@ -33,6 +34,6 @@ for path in nbin_paths:
     except:
         info['risk_factor'] = None
 
-    plugins_info[path] = info
+    plugins_info[os.path.basename(path)] = info
 
 print(plugins_info)
