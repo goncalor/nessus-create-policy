@@ -15,7 +15,7 @@ nbin_paths = glob.glob(sys.argv[1] + "*.nbin")
 plugins_info = {}
 
 p_id = re.compile('script_id\((?P<script_id>.*)\)')
-p_name = re.compile('script_name\([^"]*"(?P<script_name>.*)"\)')
+p_name = re.compile('''script_name\([^"']*["'](?P<script_name>.*)["']\)''')
 p_name_alt = re.compile('name\[".*"\].*"(?P<script_name>.*)"')
 p_cvss2 = re.compile('script_set_cvss_base_vector\([^"]*"CVSS2#(?P<cvss2_vect>.*)"\)')
 p_cvss3 = re.compile('script_set_cvss3_base_vector\([^"]*"(?P<cvss2_vect>.*)"\)')
@@ -40,7 +40,7 @@ for path in nasl_paths:
     info['cvss3'] = float(CVSS3(m.group(1).strip()).base_score) if m else None
 
     m = p_deps.search(t)
-    info['dependencies'] = [d.strip(' "\n\t')
+    info['dependencies'] = [d.strip(''' "'\n\t''')
             for d in m.group(1).split(',')] if m else []
 
     plugins_info[os.path.basename(path)] = info
