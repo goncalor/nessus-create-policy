@@ -41,7 +41,7 @@ for path in nasl_paths:
 
     m = p_deps.search(t)
     info['dependencies'] = [d.strip(' "\n\t')
-            for d in m.group(1).split(',')] if m else None
+            for d in m.group(1).split(',')] if m else []
 
     plugins_info[os.path.basename(path)] = info
 
