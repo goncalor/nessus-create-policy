@@ -19,7 +19,7 @@ p_name = re.compile('script_name\([^"]*"(?P<script_name>.*)"\)')
 p_name_alt = re.compile('name\[".*"\].*"(?P<script_name>.*)"')
 p_cvss2 = re.compile('script_set_cvss_base_vector\([^"]*"CVSS2#(?P<cvss2_vect>.*)"\)')
 p_cvss3 = re.compile('script_set_cvss3_base_vector\([^"]*"(?P<cvss2_vect>.*)"\)')
-p_deps = re.compile('script_dependencies\((?P<script_deps>[^)]+)\)', re.DOTALL)
+p_deps = re.compile('script_dependencies\((?P<script_deps>.+?)\)', re.DOTALL)
 # TODO: some plugins have a risk_factor instead of CVSS
 for path in nasl_paths:
     with open(path) as f:
