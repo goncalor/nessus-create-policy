@@ -5,12 +5,22 @@ import subprocess
 import xml.etree.ElementTree as ET
 import sys
 import os.path
+import re
 
 # TODO: check that sys.argv[1] is a directory and ends in /
 nasl_paths = glob.glob(sys.argv[1] + "*.nasl")
 nbin_paths = glob.glob(sys.argv[1] + "*.nbin")
 
 plugins_info = {}
+
+for path in nasl_paths:
+    info = {}
+    with open(path) as f:
+        t = f.read()
+    m = re.search('script_id\((?P<script_id>.*)\)', t)
+    info['script_id'] = m.group(1) if m else None
+
+    plugins_info[os.path.basename(path)] = info
 
 for path in nbin_paths:
     # it should be more efficient to call 'nasl' with multiple files
