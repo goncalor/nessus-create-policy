@@ -33,9 +33,9 @@ for path in nasl_paths:
     info['script_name'] = m.group(1) if m else None
 
     m = p_cvss2.search(t)
-    info['cvss2'] = float(CVSS2(m.group(1)).base_score) if m else None
+    info['cvss2'] = float(CVSS2(m.group(1).strip()).base_score) if m else None
     m = p_cvss3.search(t)
-    info['cvss3'] = float(CVSS3(m.group(1)).base_score) if m else None
+    info['cvss3'] = float(CVSS3(m.group(1).strip()).base_score) if m else None
 
     plugins_info[os.path.basename(path)] = info
 
