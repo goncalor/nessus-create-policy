@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 import sys
 import os.path
 import re
+from cvss import CVSS2, CVSS3
 
 # TODO: check that sys.argv[1] is a directory and ends in /
 nasl_paths = glob.glob(sys.argv[1] + "*.nasl")
@@ -16,6 +17,9 @@ plugins_info = {}
 p_id = re.compile('script_id\((?P<script_id>.*)\)')
 p_name = re.compile('script_name\([^"]*"(?P<script_name>.*)"\)')
 p_name_alt = re.compile('name\[".*"\].*"(?P<script_name>.*)"')
+p_cvss2 = re.compile('script_set_cvss_base_vector\([^"]*"CVSS2#(?P<cvss2_vect>.*)"\)')
+p_cvss3 = re.compile('script_set_cvss3_base_vector\([^"]*"(?P<cvss2_vect>.*)"\)')
+# TODO: some plugins have a risk_factor instead of CVSS
 for path in nasl_paths:
     with open(path) as f:
         t = f.read()
@@ -28,7 +32,10 @@ for path in nasl_paths:
     m = m if m else p_name_alt.search(t)
     info['script_name'] = m.group(1) if m else None
 
-    print(path, info['script_name'])
+    m = p_cvss2.search(t)
+    info['cvss2'] = float(CVSS2(m.group(1)).base_score) if m else None
+    m = p_cvss3.search(t)
+    info['cvss3'] = float(CVSS3(m.group(1)).base_score) if m else None
 
     plugins_info[os.path.basename(path)] = info
 
