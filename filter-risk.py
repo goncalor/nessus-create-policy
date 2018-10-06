@@ -14,6 +14,8 @@ nbin_paths = glob.glob(sys.argv[1] + "*.nbin")
 plugins_info = {}
 
 p_id = re.compile('script_id\((?P<script_id>.*)\)')
+p_name = re.compile('script_name\([^"]*"(?P<script_name>.*)"\)')
+p_name_alt = re.compile('name\[".*"\].*"(?P<script_name>.*)"')
 for path in nasl_paths:
     with open(path) as f:
         t = f.read()
@@ -21,6 +23,12 @@ for path in nasl_paths:
 
     m = p_id.search(t)
     info['script_id'] = m.group(1) if m else None
+
+    m = p_name.search(t)
+    m = m if m else p_name_alt.search(t)
+    info['script_name'] = m.group(1) if m else None
+
+    print(path, info['script_name'])
 
     plugins_info[os.path.basename(path)] = info
 
