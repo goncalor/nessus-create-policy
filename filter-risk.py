@@ -32,6 +32,7 @@ for path in nasl_paths:
     m = m if m else p_name_alt.search(t)
     info['script_name'] = m.group(1) if m else None
 
+    # some CVSS strings have leading/trailing spaces, hence the use of strip()
     m = p_cvss2.search(t)
     info['cvss2'] = float(CVSS2(m.group(1).strip()).base_score) if m else None
     m = p_cvss3.search(t)
