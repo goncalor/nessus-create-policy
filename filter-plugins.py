@@ -25,6 +25,9 @@ if not all([sev in known_severities for sev in args.severity]):
     parser.print_help()
     sys.exit(1)
 
+# Capitalise the first character of each severity
+args.severity = {sev.title() for sev in args.severity}
+
 def calc_severity(info):
     cvss2 = info['cvss2']
     cvss3 = info['cvss3']
