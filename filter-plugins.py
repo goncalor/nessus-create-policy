@@ -7,8 +7,9 @@ import sys
 
 parser = argparse.ArgumentParser(
         description='Filter Nessus plugins according to severity and name')
-parser.add_argument('plugin_dir', metavar="<plugin_dir>",
-        type=str, help='directory containing Nessus plugin scripts')
+parser.add_argument('plugin_dir', metavar='plugin_dir', nargs='?',
+        type=str, help='directory containing Nessus plugin scripts',
+        default='/opt/nessus/lib/nessus/plugins/')
 
 args = parser.parse_args()
 
