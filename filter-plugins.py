@@ -5,9 +5,11 @@ import argparse
 import glob
 import sys
 
+known_severities = ['info', 'low', 'medium', 'high', 'critical']
+
 parser = argparse.ArgumentParser(
         description='Filter Nessus plugins according to severity and name')
-parser.add_argument('--severity',
+parser.add_argument('--severity', default=','.join(known_severities),
         type=lambda s: [sev for sev in s.split(',')],
         help='''severities to consider, specified as a comma separated list.
         Allowed values: info, low, medium, high, critical. Example:
@@ -17,6 +19,11 @@ parser.add_argument('plugin_dir', metavar='plugin_dir', nargs='?',
         default='/opt/nessus/lib/nessus/plugins/')
 
 args = parser.parse_args()
+
+if not all([sev in known_severities for sev in args.severity]):
+    print('ERROR: unknown severity value', file=sys.stderr)
+    parser.print_help()
+    sys.exit(1)
 
 def calc_severity(info):
     cvss2 = info['cvss2']
