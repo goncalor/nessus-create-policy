@@ -80,5 +80,9 @@ for p in info:
     if calc_severity(info[p]) in args.severity:
         filtered.add(p)
 
-for p in filtered:
+# Recursively find dependencies for the plugins of interest
+deps = set()
+find_deps(info, filtered, deps)
+
+for p in filtered | deps:
     print('{};{};{}'.format(info[p]['script_id'], p, calc_severity(info[p])))
