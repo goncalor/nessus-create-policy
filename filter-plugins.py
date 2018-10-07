@@ -61,6 +61,16 @@ def calc_severity(info):
 
     return None
 
+def find_deps(info, plugins, deps):
+    for p in plugins:
+        try:
+            neigh = set(info[p]['dependencies'])
+        except:
+            print('WARN: missing information on plugin ' + p, file=sys.stderr)
+            continue
+        s = neigh - deps
+        deps.update(s)
+        find_deps(info, s, deps)
 
 nasl_paths = glob.glob(args.plugin_dir + '*.nasl')
 info = plugin_info.extract_nasl_info(nasl_paths)
