@@ -1,8 +1,16 @@
 #!/usr/bin/python3
 
+import plugin_info
+import argparse
 import glob
 import sys
-import plugin_info
+
+parser = argparse.ArgumentParser(
+        description='Filter Nessus plugins according to severity and name')
+parser.add_argument('plugin_dir', metavar="<plugin_dir>",
+        type=str, help='directory containing Nessus plugin scripts')
+
+args = parser.parse_args()
 
 def calc_severity(info):
     cvss2 = info['cvss2']
