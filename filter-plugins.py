@@ -10,7 +10,7 @@ known_severities = ['info', 'low', 'medium', 'high', 'critical']
 parser = argparse.ArgumentParser(
         description='Filter Nessus plugins according to severity and name')
 parser.add_argument('--severity', default=','.join(known_severities),
-        type=lambda s: [sev for sev in s.split(',')],
+        type=lambda s: {sev for sev in s.split(',')},
         help='''severities to consider, specified as a comma separated list.
         Allowed values: info, low, medium, high, critical. Example:
         high,critical''')
