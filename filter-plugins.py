@@ -69,3 +69,6 @@ filtered = set()
 for p in info:
     if calc_severity(info[p]) in args.severity:
         filtered.add(p)
+
+for p in filtered:
+    print('{};{};{}'.format(info[p]['script_id'], p, calc_severity(info[p])))
