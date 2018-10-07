@@ -10,9 +10,10 @@ p_id = re.compile('script_id\((?P<script_id>.*)\)')
 p_name = re.compile('''script_name\([^"']*["'](?P<script_name>.*)["']\)''')
 p_name_alt = re.compile('name\[".*"\].*"(?P<script_name>.*)"')
 p_cvss2 = re.compile('script_set_cvss_base_vector\([^"]*"CVSS2#(?P<cvss2_vect>.*)"\)')
+# TODO: add cvss2 alternative for cases where script_set_attribute is used
 p_cvss3 = re.compile('script_set_cvss3_base_vector\([^"]*"(?P<cvss2_vect>.*)"\)')
 p_risk_factor = re.compile(
-        '''script_set_attribute\([^)]+risk_factor[^)]+["']([^"']+)["']\)''',
+        '''script_set_attribute\([^)]+risk_factor[^)]+["']([^"']+)["']\s*\)''',
         re.DOTALL)
 p_deps = re.compile('script_dependencies\((?P<script_deps>.+?)\)', re.DOTALL)
 
