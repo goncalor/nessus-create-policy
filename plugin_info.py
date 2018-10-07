@@ -66,6 +66,10 @@ def extract_nbin_info(nbin_paths):
         except:
             info['script_name'] = None
 
+        # TODO: extract these if needed in the future
+        info['cvss2'] = None
+        info['cvss3'] = None
+
         try:
             info['risk_factor'] = root.find(
                     'attributes/attribute[name="risk_factor"]/value').text
