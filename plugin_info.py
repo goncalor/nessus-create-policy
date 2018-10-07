@@ -10,7 +10,9 @@ p_id = re.compile('script_id\((?P<script_id>.*)\)')
 p_name = re.compile('''script_name\([^"']*["'](?P<script_name>.*)["']\)''')
 p_name_alt = re.compile('name\[".*"\].*"(?P<script_name>.*)"')
 p_cvss2 = re.compile('script_set_cvss_base_vector\([^"]*"CVSS2#(?P<cvss2_vect>.*)"\)')
-# TODO: add cvss2 alternative for cases where script_set_attribute is used
+p_cvss2_alt = re.compile(
+        '''script_set_attribute\([^)]+cvss_vector[^)]+["']CVSS2#([^"']+)["']\s*\)''',
+        re.DOTALL)
 p_cvss3 = re.compile('script_set_cvss3_base_vector\([^"]*"(?P<cvss2_vect>.*)"\)')
 p_risk_factor = re.compile(
         '''script_set_attribute\([^)]+risk_factor[^)]+["']([^"']+)["']\s*\)''',
@@ -33,6 +35,7 @@ def extract_nasl_info(nasl_paths):
 
         # some CVSS strings have leading/trailing spaces, hence the use of strip()
         m = p_cvss2.search(t)
+        m = m if m else p_cvss2_alt.search(t)
         info['cvss2'] = float(CVSS2(m.group(1).strip()).base_score) if m else None
         m = p_cvss3.search(t)
         info['cvss3'] = float(CVSS3(m.group(1).strip()).base_score) if m else None
