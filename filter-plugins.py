@@ -17,7 +17,6 @@ parser.add_argument('--severity', default=','.join(known_severities),
 parser.add_argument('plugin_dir', metavar='plugin_dir', nargs='?',
         type=str, help='directory containing Nessus plugin scripts',
         default='/opt/nessus/lib/nessus/plugins/')
-
 args = parser.parse_args()
 
 if not all([sev in known_severities for sev in args.severity]):
@@ -61,3 +60,12 @@ def calc_severity(info):
             return 'Low'
 
     return None
+
+
+nasl_paths = glob.glob(args.plugin_dir + '*.nasl')
+info = plugin_info.extract_nasl_info(nasl_paths)
+
+filtered = set()
+for p in info:
+    if calc_severity(info[p]) in args.severity:
+        filtered.add(p)
