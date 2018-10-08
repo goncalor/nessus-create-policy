@@ -72,8 +72,15 @@ def find_deps(info, plugins, deps):
         deps.update(s)
         find_deps(info, s, deps)
 
+
 nasl_paths = glob.glob(args.plugin_dir + '*.nasl')
+nbin_paths = glob.glob(args.plugin_dir + '*.nbin')
+print('Parsing .nasl files... ', end='', flush=True)
 info = plugin_info.extract_nasl_info(nasl_paths)
+print('Done')
+print('Parsing .nbin files... ', end='', flush=True)
+info = {**info, **plugin_info.extract_nbin_info(nbin_paths)}
+print('Done')
 
 filtered = set()
 for p in info:
