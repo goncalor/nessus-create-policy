@@ -17,7 +17,7 @@ p_cvss3 = re.compile('script_set_cvss3_base_vector\([^"]*"(?P<cvss2_vect>.*)"\)'
 p_risk_factor = re.compile(
         '''script_set_attribute\([^)]+risk_factor[^)]+["']([^"']+)["']\s*\)''',
         re.DOTALL)
-p_deps = re.compile('script_dependencies\((?P<script_deps>.+?)\)', re.DOTALL)
+p_deps = re.compile('script_dependencies?\((?P<script_deps>.+?)\)', re.DOTALL)
 
 def extract_nasl_info(nasl_paths):
     plugins_info = {}
