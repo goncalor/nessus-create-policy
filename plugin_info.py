@@ -18,6 +18,7 @@ p_risk_factor = re.compile(
         '''script_set_attribute\([^)]+risk_factor[^)]+["']([^"']+)["']\s*\)''',
         re.DOTALL)
 p_deps = re.compile('script_dependencies?\((?P<script_deps>.+?)\)', re.DOTALL)
+p_deps2 = re.compile('''["'](.*?)["']''')
 
 def extract_nasl_info(nasl_paths):
     plugins_info = {}
@@ -44,8 +45,7 @@ def extract_nasl_info(nasl_paths):
         info['risk_factor'] = m.group(1) if m else None
 
         m = p_deps.search(t)
-        info['dependencies'] = [d.strip(''' "'\n\t''')
-                for d in m.group(1).split(',')] if m else []
+        info['dependencies'] = p_deps2.findall(m.group(1)) if m else []
 
         plugins_info[os.path.basename(path)] = info
 
