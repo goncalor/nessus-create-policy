@@ -64,6 +64,7 @@ def calc_severity(info):
 def find_deps(info, plugins, deps):
     for p in plugins:
         try:
+            # TODO: use sets to represent dependencies
             neigh = set(info[p]['dependencies'])
         except:
             print('WARN: missing information on plugin ' + p, file=sys.stderr)
