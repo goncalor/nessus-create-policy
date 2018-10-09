@@ -93,4 +93,7 @@ deps = set()
 find_deps(info, filtered, deps)
 
 for p in filtered | deps:
-    print('{};{};{}'.format(info[p]['script_id'], p, calc_severity(info[p])))
+    try:
+        print('{};{};{}'.format(info[p]['script_id'], p, calc_severity(info[p])))
+    except KeyError:
+        pass
