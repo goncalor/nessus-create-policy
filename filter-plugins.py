@@ -13,9 +13,9 @@ parser.add_argument('--severity', default=','.join(known_severities),
         type=lambda s: {sev for sev in s.split(',')},
         help='''severities to consider, specified as a comma separated list.
         Allowed values: info, low, medium, high, critical. Example:
-        high,critical''')
-parser.add_argument('plugin_dir', metavar='plugin_dir', nargs='?',
-        type=str, help='directory containing Nessus plugin scripts',
+        high,critical. Default: %(default)s''')
+parser.add_argument('plugin_dir', metavar='plugin_dir', nargs='?', type=str,
+        help='directory containing Nessus plugin scripts. Default: %(default)s',
         default='/opt/nessus/lib/nessus/plugins/')
 args = parser.parse_args()
 
