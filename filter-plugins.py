@@ -17,6 +17,8 @@ parser.add_argument('--severity', default=','.join(known_severities),
 parser.add_argument('plugin_dir', metavar='plugin_dir', nargs='?', type=str,
         help='directory containing Nessus plugin scripts. Default: %(default)s',
         default='/opt/nessus/lib/nessus/plugins/')
+parser.add_argument('--no-include-deps', action='store_true',
+        help='do not include recursive dependencies for the filtered scripts')
 args = parser.parse_args()
 
 if not all([sev in known_severities for sev in args.severity]):
@@ -80,7 +82,6 @@ print('Parsing .nasl files... ', end='', flush=True)
 info = plugin_info.extract_nasl_info(nasl_paths)
 print('Done')
 print('Parsing .nbin files... ', end='', flush=True)
-info = {**info, **plugin_info.extract_nbin_info(nbin_paths)}
 print('Done')
 
 filtered = set()
@@ -90,7 +91,8 @@ for p in info:
 
 # Recursively find dependencies for the plugins of interest
 deps = set()
-find_deps(info, filtered, deps)
+if not args.no_include_deps:
+    find_deps(info, filtered, deps)
 
 for p in filtered | deps:
     try:
