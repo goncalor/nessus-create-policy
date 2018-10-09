@@ -55,7 +55,8 @@ def extract_nbin_info(nbin_paths):
     plugins_info = {}
     for path in nbin_paths:
         # it should be more efficient to call 'nasl' with multiple files
-        xml = subprocess.check_output(['/opt/nessus/bin/nasl', '-VVVVV', path])
+        xml = subprocess.check_output(
+                ['/opt/nessus/bin/nasl', '-VVVVV', path], stderr=subprocess.DEVNULL)
         root = ET.fromstring(xml)
 
         info = {}
